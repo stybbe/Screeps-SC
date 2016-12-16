@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Screeps SC</title>
+        <style type="text/css">
+            body {
+                padding: 0;
+                margin: 0;
+            }
+            .module-block{
+                display: inline-block;
+                width: 100%;
+            }
+            .module-block:nth-child(even) {
+                background-color: #f9f9f9;
+            }
+            .module-block > h3 {
+                margin-top: 0;
+                padding: 15px 15px 0 15px;
+            }
+            .disabled {
+                pointer-events: none;
+                opacity: 0.4;
+            }
+            .module-image{
+                width: 80px;
+                float: left;
+                height: 100%;
+                padding-left: 15px;
+                margin-bottom: 10px;
+            }
+            .module-image::before{
+                content: "\200B";
+            }
+            .module-content{
+                margin-left: 80px;
+            }
+            div#footer{
+                display: inline-block;
+                width: 100%;
+                padding: 15px 0 15px 0;
+            }
+            div#footer > div#status{
+                float:left;
+                padding-left: 15px;
+            }
+            div#footer > div#save-btn-group{
+                float:right;
+                padding-right: 15px;
+            }
+            .enable-label{
+                font-size: 75%; 
+                float:right;
+            }
+            .checkbox-text{
+                vertical-align: text-bottom;
+            }
+            .module-block > img{
+                max-height: 64px;
+                max-width: 64px;
+            }
+        </style>
+    </head>
+
+    <body>
+
+        <div id="modules">
+        </div>
+
+        <div id="footer">
+            <div id="status"></div>
+            <div id="save-btn-group">
+                <button id="save">Save</button>
+            </div>
+        </div>
+
+        <script src="options.js"></script>
+    </body>
+
+</html>

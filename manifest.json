@@ -1,0 +1,27 @@
+{
+  "name": "Screeps SC",
+  "description": "Extended browser functionality to the game Screeps",
+  "version": "1.0",
+  "permissions": [
+    "activeTab",
+    "storage",
+    "tabs",
+    "*://screeps.com/*",
+    "*://*.leagueofautomatednations.com/*",
+    "webRequest"
+  ],
+  "background": {
+    "scripts": ["background.js"]
+  },
+  "browser_action": {
+    "default_title": "Screeps SC options"
+  },
+  "options_ui": {
+    "page": "options/options.html",
+    "chrome_style": true
+  },
+  "manifest_version": 2,
+  "icons": {"16": "icons/icon16.png",
+            "48": "icons/icon48.png",
+            "128": "icons/icon128.png" }
+}
