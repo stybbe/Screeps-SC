@@ -1,5 +1,7 @@
-# [[ https://raw.githubusercontent.com/stybbe/Screeps-SC/master/icons/icon48.png | height = 24px ]] Screeps-SC 
+# <img src="https://raw.githubusercontent.com/stybbe/Screeps-SC/master/icons/icon48.png" width="24"> Screeps-SC 
 Modular chrome extension for the game [screeps.com](https://screeps.com/).
+
+
 
 ## Installation
 In your Chrome browser go to `Settings -> Extensions -> Load unpacked extension...` and select the Screeps-SC folder.
