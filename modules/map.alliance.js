@@ -95,7 +95,7 @@ module.exports.update = function(){
                                 newEle.id = id;
                                 newEle.className = 'room-prohibited';
 
-                                if (module.config.background === "Image"){
+                                if (module.config && module.config.background === "Image"){
                                     var url = "http://www.leagueofautomatednations.com/obj/" + module.exports.alliances[allianceName].logo;
 
                                     newEle.setAttribute("style", `background-image: url("${url}");
@@ -176,7 +176,7 @@ module.exports.update = function(){
                                     left: ${left}px;
                                     top: ${top}px;`;
 
-                                if (module.config.background === "Image"){
+                                if (module.config && module.config.background === "Image"){
                                     var url = "http://www.leagueofautomatednations.com/obj/" + module.exports.alliances[allianceName].logo;
 
                                     css += `background-image: url("${url}");
@@ -263,7 +263,7 @@ module.exports.update = function(){
                                         left: ${left}px;
                                         top: ${top}px;`;
 
-                                    if (module.config.background === "Image"){
+                                    if (module.config && module.config.background === "Image"){
                                         var url = "http://www.leagueofautomatednations.com/obj/" + module.exports.alliances[allianceName].logo;
 
                                         css += `background-image: url("${url}");
