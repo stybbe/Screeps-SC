@@ -81,8 +81,10 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
                     data.onUpdateArr.forEach(function(info){
                         if (tab.url.startsWith(info.url)){
                             getStorageSync(info.path, function(option){
-                                if (option.enabled !== false){
+                                if (option && option.enabled !== false){
                                     executeModule(tabId, info, option.config);
+                                }else{
+                                    executeModule(tabId, info);
                                 }
                             });
                         }
@@ -101,8 +103,10 @@ chrome.webRequest.onCompleted.addListener(function(details) {
             data.onCompletedArr.forEach(function(info){
                 if (details.url.startsWith(info.url)){
                     getStorageSync(info.path, function(option){
-                        if (option.enabled !== false){
+                        if (option && option.enabled !== false){
                             executeModule(tabId, info, option.config);
+                        }else{
+                            executeModule(details.tabId, info);
                         }
                     });
                 }
