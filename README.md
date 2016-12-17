@@ -38,3 +38,5 @@ Also take a look at the [settings.json](https://github.com/stybbe/Screeps-SC/blo
 2. When a url for a request starts with a given value in `onUpdate` or `onCompleted` the background thread will execute the module `path` connected to the `onUpdate` or `onCompleted`. 
 3. The `content.js` script will inject the `module.js` script together with the executed module. The executed module can access any function in the `module.js` script. Each module has their own `module.js` and it contains two module specific parameters `module.name` and `module.confg` (if you have set up a config in the `settings.json`).
 4. If it's the first time the module is injected to the page session the `module.exports.init` function will be called in the module. All other `onUpdate` or `onCompleted` triggers will call the `module.exports.update` function.
+
+## [FAQ](https://github.com/stybbe/Screeps-SC/wiki/FAQ)
