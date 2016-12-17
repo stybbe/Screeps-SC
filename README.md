@@ -20,7 +20,7 @@ In your Chrome browser go to `Settings -> Extensions -> Load unpacked extension.
 4. Reload the plugin at `Settings -> Extensions -> Screeps SC -> Reload`
 
 ## Samples
-The project includes some modules I've created. Click on a image below to see the source code.
+The project includes some modules I've created. Click on an image below to see the source code.
 
 [![Alliance map](https://raw.githubusercontent.com/stybbe/Screeps-SC/master/options/images/map.alliance.png "Alliance map")](https://github.com/stybbe/Screeps-SC/blob/master/modules/map.alliance.js)
 [![Detailed market history](https://raw.githubusercontent.com/stybbe/Screeps-SC/master/options/images/market.history.png "Detailed market history")](https://github.com/stybbe/Screeps-SC/blob/master/modules/market.history.js)
