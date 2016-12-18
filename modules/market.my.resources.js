@@ -14,6 +14,10 @@ module.exports.init = function(){
             console.error(data || error);
         }
 
+        $('body').on('click', `.market-controls > button`, function () {
+            module.exports.fetchResources();
+        });
+
         module.exports.update();
     });    
 }
@@ -103,10 +107,6 @@ module.exports.update = function(){
                     module.exports.fetchResources();
                 }
                 localStorage.setItem('scMarketDropdown', this.value);
-            });
-
-            $('body').on('click', `.market-controls > button`, function () {
-                module.exports.fetchResources();
             });
         }
 
