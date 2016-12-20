@@ -152,7 +152,7 @@ function getStorageSync(path, cb){
     });
 }
 
-function executeModule(tabId, info, config, tries = 5){
+function executeModule(tabId, info, config, tries = 15){
     if (!activeTabPorts[tabId][info.path]){
         activeTabPorts[tabId][info.path] = {}
     }
@@ -193,7 +193,7 @@ function executeModule(tabId, info, config, tries = 5){
             }else{
                 setTimeout(function(){
                     executeModule(tabId, info, config, tries - 1);
-                }, 100);
+                }, 500);
             }
         }
     }
