@@ -99,7 +99,37 @@ module.exports.update = function(){
                 })(newColumn);
             }
         }
+        $(".table.table-striped tbody tr th:last-child").css('text-align', 'right');
+        $(".table.table-striped tbody tr td:last-child").css('text-align', 'right');
 
+        if($("#th-gcl").length == 0) {
+            $(".table.table-striped tbody tr th:last-child").after('<th id="th-gcl">GCL</th>');
+
+            
+            for(var i = 0; i < leaderBoard.list.length; i++){
+                var lastColumn = $(".table.table-striped tbody tr:nth-child(" + (i + 2) + ") td:last-child");
+                var playerColumn = $(".table.table-striped tbody tr:nth-child(" + (i + 2) + ") td:nth-child(2)");
+                var playerName = playerColumn[0].innerText.trim();
+                
+                var newColumn = $(`<td id='th-gcl-${i}'></td>`)
+                lastColumn.after(newColumn);
+
+                (function(column, player) {
+                    module.ajaxGet(`https://screeps.com/api/user/find?username=${player}`, function(result, err){
+                        var html = "";
+
+                        if (result){
+                            var gcl = result.user.gcl;
+                            var gclLevel = Math.floor(Math.pow((gcl||0)/1000000,1/2.4))+1; 
+                            column.text(`${gclLevel}`);   
+                        }
+
+                        
+                    });
+                })(newColumn, playerName);
+            }
+        }
+        
         $(".table.table-striped tbody tr th:last-child").css('text-align', 'right');
         $(".table.table-striped tbody tr td:last-child").css('text-align', 'right');
 
