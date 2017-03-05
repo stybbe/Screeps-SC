@@ -103,8 +103,10 @@ module.exports.update = function(){
         $(".table.table-striped tbody tr td:last-child").css('text-align', 'right');
 
         if($("#th-gcl").length == 0) {
-            $(".table.table-striped tbody tr th:last-child").after('<th id="th-gcl">GCL</th>');
-
+            if (window.location.href.includes("/power/"))
+                $(".table.table-striped tbody tr th:last-child").after('<th id="th-gcl">Processed</th>');
+            else
+                $(".table.table-striped tbody tr th:last-child").after('<th id="th-gcl">GCL</th>');
             
             for(var i = 0; i < leaderBoard.list.length; i++){
                 var lastColumn = $(".table.table-striped tbody tr:nth-child(" + (i + 2) + ") td:last-child");
@@ -119,9 +121,22 @@ module.exports.update = function(){
                         var html = "";
 
                         if (result){
-                            var gcl = result.user.gcl;
-                            var gclLevel = Math.floor(Math.pow((gcl||0)/1000000,1/2.4))+1; 
-                            column.text(`${gclLevel}`);   
+                            if (window.location.href.includes("/power/")){
+                                column.text(`${format_number(result.user.power)}`);   
+                            }else{
+                                var gcl = result.user.gcl;
+                                var gclLevel = Math.floor(Math.pow((gcl||0)/1000000,1/2.4))+1; 
+                                column.text(`${gclLevel}`);                                   
+                            }
+                        }
+                        function format_number(n) {
+                          if (n < 1000) {
+                            return parseInt(n);
+                          } else if (n < 1000000) {
+                            return (parseInt(n / 1000) + 'K');
+                          } else if (n < 1000000000) {
+                            return (parseInt(n / 1000000) + 'M');
+                          }
                         }
 
                         
