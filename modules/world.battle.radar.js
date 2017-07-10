@@ -68,7 +68,7 @@ module.exports.openModal = function(){
                                 <li><a href="javascript:void(0)">Current PvP</a></li>
                               </ul>     
                             </div>
-                            <div class="panel-body">
+                            <div class="panel-body" style="overflow:scroll; height:500px;">
                               <div class="tab-content">
                                 <div class="tab-pane active">
 
