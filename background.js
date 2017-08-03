@@ -104,7 +104,7 @@ chrome.webRequest.onCompleted.addListener(function(details) {
                 if (details.url.startsWith(info.url)){
                     getStorageSync(info.path, function(option){
                         if (option && option.enabled !== false){
-                            executeModule(tabId, info, option.config);
+                            executeModule(details.tabId, info, option.config);
                         }else{
                             executeModule(details.tabId, info);
                         }
