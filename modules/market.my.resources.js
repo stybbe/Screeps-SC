@@ -7,10 +7,11 @@ module.exports.init = function(){
     var userid = JSON.parse(localStorage.getItem('users.code.activeWorld'))[0]._id;
 
     module.ajaxGet("https://screeps.com/api/user/rooms?id=" + userid, function(data, error){
-        if (data && data.rooms){
-            module.exports.rooms = data.rooms;
+        if (data && data.shards){
+            module.exports.shards = data.shards;
         }else{
-            module.exports.rooms = [];
+            module.exports.shards = {};
+            module.exports.shards.shards = {};
             console.error(data || error);
         }
 
@@ -23,6 +24,17 @@ module.exports.init = function(){
 }
 
 module.exports.update = function(){
+
+    if (window.location.href.startsWith("https://screeps.com/a/#!/market/all/")){
+        module.getScopeData("market-all-orders", "AllOrders", [], function(AllOrders){
+            var orgFunc = AllOrders.onShardChange;
+            AllOrders.onShardChange = function(){
+                module.exports.fetchResources();
+                orgFunc();
+            }
+        });
+    }
+    
     module.getScopeData("market", "$parent", [], function(){
 
         if (!document.getElementById('sc-my-resources')){
@@ -251,7 +263,9 @@ module.exports.fetchResources = function(){
           <use xlink:href="#sc-svg-loading">
         </svg>`);
 
-    module.sendConsoleCommand(command);
+    var shardSelect = $("button > span > span:contains('Shard:') > b");
+
+    module.sendConsoleCommand(command, undefined, shardSelect ? shardSelect.text() : undefined);
 }
 
 module.exports.listenToConsole = function(){

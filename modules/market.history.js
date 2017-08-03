@@ -2,10 +2,10 @@ module.exports.init = function(){
     var userid = JSON.parse(localStorage.getItem('users.code.activeWorld'))[0]._id;
 
     module.ajaxGet("https://screeps.com/api/user/rooms?id=" + userid, function(data, error){
-        if (data && data.rooms){
-            module.exports.rooms = data.rooms;
+        if (data && data.shards){
+            module.exports.shards = data.shards;
         }else{
-            module.exports.rooms = [];
+            module.exports.shards = {};
             console.error(data || error);
         }
 
@@ -25,6 +25,7 @@ module.exports.update = function(){
 
             } 
             else if (historyObj.type == "market.buy" || historyObj.type == "market.sell"){
+                var shard = list[i].shard || "shard0";
                 var market = list[i].market
                 var type = market.resourceType;
                 var roomName = market.roomName;
@@ -40,15 +41,15 @@ module.exports.update = function(){
                                         <img src="https://s3.amazonaws.com/static.screeps.com/upload/mineral-icons/energy.png">
                                       </a>`;
 
-                if (module.exports.rooms.includes(targetRoomName)){
+                if (module.exports.shards[shard] && module.exports.shards[shard].includes(targetRoomName)){
                     let temp = roomName;
                     roomName = targetRoomName;
                     targetRoomName = temp;
                     targetRoomIsMine = true;
                 }
 
-                var roomLink = `<a href="#!/room/${roomName}">${roomName}</a>`;
-                var targetRoomLink = `<a href="#!/room/${targetRoomName}">${targetRoomName}</a>`;
+                var roomLink = `<a href="#!/room/${shard}/${roomName}">${roomName}</a>`;
+                var targetRoomLink = `<a href="#!/room/${shard}/${targetRoomName}">${targetRoomName}</a>`;
                 var infoCircle = '<div class="fa fa-question-circle" title=\'' + JSON.stringify(list[i].market) + '\'></div>'
                 var transactionCostHtml = `(<span style="color:#ff8f8f;margin-right:-12px">-${transactionCost} ${resourceEnergy}</span>)`
 
@@ -101,17 +102,8 @@ module.exports.calcRoomsDistance = function (room1, room2, continuous) {
     var dx = Math.abs(x2 - x1);
     var dy = Math.abs(y2 - y1);
     if (continuous) {
-        var width = 162;
-        var height = 162;
-
-        // client constants is not up to date with server constants
-        if (constants.WORLD_WIDTH > width){
-            width = constants.WORLD_WIDTH;
-        }
-
-        if (constants.WORLD_HEIGHT > height){
-            height = constants.WORLD_HEIGHT;
-        }
+        var width = constants.WORLD_WIDTH;
+        var height = constants.WORLD_HEIGHT;
 
         dx = Math.min(width - dx, dx);
         dy = Math.min(height - dy, dy);

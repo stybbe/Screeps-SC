@@ -1,5 +1,7 @@
 module.exports.init = function(){
     module.dispatchEvent({event: 'xhttp', url:'http://www.leagueofautomatednations.com/map/rooms.js'}, function(response){
+
+        // TODO update room logic when league update their script
         module.exports.rooms = JSON.parse(response.data);
 
         module.dispatchEvent({event: 'xhttp', url:'http://www.leagueofautomatednations.com/alliances.js'}, function(response){
@@ -102,7 +104,7 @@ module.exports.openModal = function(){
                                                     <th class="orders-table__col--left">Defending room</th>
                                                     <th>Attacker</th>
                                                     <th>Alliance</th>
-                                                    <th>Attacking creeps</th>
+                                                    <th>Shard</th>
                                                     <th>Time</th>
                                                 </tr>
                                             </tbody>
@@ -134,11 +136,9 @@ module.exports.openModal = function(){
         module.exports.closeModal();
     });
 
-    module.ajaxGet("https://screeps.com/api/game/time", function(gameTime){
-
-        module.exports.displayNukeTab(gameTime);
-        module.exports.displayPvPTab(gameTime);
-
+    module.ajaxGet("https://screeps.com/api/game/time?shard=" + module.getCurrentShard(), function(data){
+        module.exports.displayNukeTab(data.time, module.getCurrentShard());
+        module.exports.displayPvPTab(data.time, module.getCurrentShard());
     });
 
     $('#sc-modal-battle-ok').click(function() { 
@@ -230,10 +230,16 @@ module.exports.getAllianceHtml = function(playerName){
     return allianceHtml;
 }
 
-module.exports.displayNukeTab = function(gameTime){
+module.exports.displayNukeTab = function(gameTime, shard){
     module.ajaxGet("https://screeps.com/api/experimental/nukes", function(data){
-        if (data.nukes.length === 0){
-            $('#sc-tbody-battle-radar').append("<div style='position: relative;left: 200%;font-size: 16px;padding-top: 10px;''> The world is at peace.</div>");
+        if (data.error){
+            $('#sc-tbody-battle-radar').append(`<div style='position: absolute;right: 50%;font-size: 16px;padding-top: 10px;''>${data.error}</div>`);
+        }
+        else if (!shard){
+            $('#sc-tbody-battle-radar-pvp').append(`<div style='position: absolute;right: 50%;font-size: 16px;padding-top: 10px;''>Failed to read shard.</div>`);
+        }
+        else if (data.nukes.length === 0){
+            $('#sc-tbody-battle-radar').append("<div style='position: absolute;right: 50%;font-size: 16px;padding-top: 10px;''> The world is at peace.</div>");
         }else{
             data.nukes.forEach(function(nukeInfo){
 
@@ -254,7 +260,7 @@ module.exports.displayNukeTab = function(gameTime){
 
                         var defenderAllianceHtml = module.exports.getAllianceHtml(defenderName);
                         var attackerAllianceHtml = module.exports.getAllianceHtml(attackerName);
-                        var timeLeft = nukeInfo.landTime - gameTime.time;
+                        var timeLeft = nukeInfo.landTime - gameTime;
 
                         var row = $(`<tr>
                                 <td>
@@ -269,7 +275,7 @@ module.exports.displayNukeTab = function(gameTime){
                                     ${defenderAllianceHtml}
                                 </td>
                                 <td class="orders-table__col--left">
-                                    <a href='https://screeps.com/a/#!/room/${nukeInfo.room}'>${nukeInfo.room}</a>
+                                    <a href='https://screeps.com/a/#!/room/${shard}/${nukeInfo.room}'>${nukeInfo.room}</a>
                                 </td>
                                 <td>
                                     <a href='https://screeps.com/a/#!/profile/${attackerName}'>${attackerName}</a>
@@ -278,7 +284,7 @@ module.exports.displayNukeTab = function(gameTime){
                                     ${attackerAllianceHtml} 
                                 </td>
                                 <td>
-                                    <a href='https://screeps.com/a/#!/room/${nukeInfo.launchRoomName}'>${nukeInfo.launchRoomName}</a>
+                                    <a href='https://screeps.com/a/#!/room/${shard}/${nukeInfo.launchRoomName}'>${nukeInfo.launchRoomName}</a>
                                 </td>
                                 <td>
                                     ${timeLeft} ticks
@@ -300,13 +306,18 @@ module.exports.displayNukeTab = function(gameTime){
     });
 }
 
-module.exports.displayPvPTab = function(gameTime){
+module.exports.displayPvPTab = function(gameTime, shard){
     module.ajaxGet("https://screeps.com/api/experimental/pvp?interval=100", function(data){
-        if (data.rooms.length === 0){
-            $('#sc-tbody-battle-radar-pvp').append("<div style='position: relative;left: 200%;font-size: 16px;padding-top: 10px;''> The world is at peace.</div>");
+        if (data.error === 0){
+            $('#sc-tbody-battle-radar-pvp').append(`<div style='position: absolute;right: 50%;font-size: 16px;padding-top: 10px;''>${data.error}</div>`);
+        }
+        else if (!shard){
+            $('#sc-tbody-battle-radar-pvp').append(`<div style='position: absolute;right: 50%;font-size: 16px;padding-top: 10px;''>Failed to read shard.</div>`);
+        }
+        else if (data.pvp[shard].rooms.length === 0){
+            $('#sc-tbody-battle-radar-pvp').append("<div style='position: absolute;right: 50%;font-size: 16px;padding-top: 10px;''> The world is at peace.</div>");
         }else{
-            data.rooms.forEach(function(roomInfo){
-
+            data.pvp[shard].rooms.forEach(function(roomInfo){
                 var defenderName = "Unknown";
                 var attackerName = "Unknown";
 
@@ -318,7 +329,7 @@ module.exports.displayPvPTab = function(gameTime){
 
                 module.exports.getBadge(defenderName, 16, 16, function(badgeDefender){
                     var defenderAllianceHtml = module.exports.getAllianceHtml(defenderName);
-                    var timeAgo = gameTime.time - roomInfo.lastPvpTime;
+                    var timeAgo = gameTime - roomInfo.lastPvpTime;
 
                     var row = $(`<tr>
                             <td>
@@ -333,7 +344,7 @@ module.exports.displayPvPTab = function(gameTime){
                                 ${defenderAllianceHtml}
                             </td>
                             <td class="orders-table__col--left">
-                                <a href='https://screeps.com/a/#!/room/${roomInfo._id}'>${roomInfo._id}</a>
+                                <a href='https://screeps.com/a/#!/room/${shard}/${roomInfo._id}'>${roomInfo._id}</a>
                             </td>
                             <td>
 
@@ -342,7 +353,7 @@ module.exports.displayPvPTab = function(gameTime){
 
                             </td>
                             <td>
-
+                                ${shard}
                             </td>
                             <td>
                                 ${timeAgo} ticks ago.
@@ -356,8 +367,8 @@ module.exports.displayPvPTab = function(gameTime){
 
                     $('#sc-tbody-battle-radar-pvp').append(row);
                 });
-
             });
+
         }
     });
 }

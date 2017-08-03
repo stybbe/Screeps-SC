@@ -181,11 +181,35 @@ module.ajaxGet = function(url, cb){
     }, cb);
 }
 
-module.sendConsoleCommand = function(command, cb){
+module.getCurrentShard = function(){
+    var url = window.location.href;
+
+    if (url.indexOf("shard") > -1){
+        var pathArray = window.location.href.split('/');
+
+        for (var i = 0; i < pathArray.length; i++) {
+            if (pathArray[i].startsWith("shard")){
+                return pathArray[i].split('?')[0];
+            }
+        }
+    }
+
+    return ""; 
+}
+
+module.sendConsoleCommand = function(command, cb, shard){
+
+    if (!shard){
+        shard = "shard0";
+    }
+
     module.ajaxCall({
         url: "https://screeps.com/api/user/console",
         method: "POST",
-        data: {expression: command}
+        data: {
+               expression: command,
+               shard: shard
+           }
     }, cb);
 }
 
