@@ -153,8 +153,9 @@ module.exports.update = function(){
 
 module.exports.getTabElement = function(resource){
     var amount = 0;
-    // Todo inject css...
-    var tabElementText = `<a id="sc-${resource}" class="market-resource" href="https://screeps.com/a/#!/market/all/${resource}" style="background: #333;padding: 8px 10px;margin-top: 3px;display: flex;justify-content: space-between;font-size: 14px;cursor: pointer;text-decoration: none;color: #eee;" onmouseover="this.style.backgroundColor='#444'" onmouseout="this.style.backgroundColor='#333'">
+    var shard = module.getCurrentShard() || "shard0";
+
+    var tabElementText = `<a id="sc-${resource}" class="market-resource" href="https://screeps.com/a/#!/market/all/${shard}/${resource}" style="background: #333;padding: 8px 10px;margin-top: 3px;display: flex;justify-content: space-between;font-size: 14px;cursor: pointer;text-decoration: none;color: #eee;" onmouseover="this.style.backgroundColor='#444'" onmouseout="this.style.backgroundColor='#333'">
         <div class="resource-name">
         <img src="https://s3.amazonaws.com/static.screeps.com/upload/mineral-icons/${resource}.png" style="margin-right: 3px;">
         </div>

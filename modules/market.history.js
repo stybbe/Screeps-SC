@@ -33,11 +33,11 @@ module.exports.update = function(){
                 var transactionCost = module.exports.calcTransactionCost(market.amount, roomName, targetRoomName);
                 var targetRoomIsMine = false;
 
-                var resourceIcon = `<a href="#!/market/all/${type}">
+                var resourceIcon = `<a href="#!/market/all/${shard}/${type}">
                                         <img src="https://s3.amazonaws.com/static.screeps.com/upload/mineral-icons/${type}.png" style="margin-right:0">
                                     </a>`;
 
-                var resourceEnergy = `<a href="#!/market/all/energy">
+                var resourceEnergy = `<a href="#!/market/all/${shard}/energy">
                                         <img src="https://s3.amazonaws.com/static.screeps.com/upload/mineral-icons/energy.png">
                                       </a>`;
 
