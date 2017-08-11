@@ -1,3 +1,12 @@
+module.exports.colors = [ 
+        "#000000", "#FEFFE6", "#FFFF00", "#006FA6", "#FF34FF", "#008941", "#FF4A46", "#A30059",
+        "#FFDBE5", "#7A4900", "#0000A6", "#63FFAC", "#B79762", "#004D43", "#8FB0FF", "#997D87",
+        "#5A0007", "#809693", "#1CE6FF", "#1B4400", "#4FC601", "#3B5DFF", "#4A3B53", "#FF2F80",
+        "#61615A", "#BA0900", "#6B7900", "#00C2A0", "#FFAA92", "#FF90C9", "#B903AA", "#D16100",
+        "#DDEFFF", "#000035", "#7B4F4B", "#A1C299", "#300018", "#0AA6D8", "#013349", "#00846F",
+        "#372101", "#FFB500", "#C2FFED", "#A079BF", "#CC0744", "#C0B9B2", "#C2FF99", "#001E09",
+        "#00489C", "#6F0062", "#0CBD66", "#EEC3FF", "#456D75", "#B77B68", "#7A87A1", "#788D66" ];
+
 module.exports.init = function(){
     module.dispatchEvent({event: 'xhttp', url:'http://www.leagueofautomatednations.com/alliances.js'}, function(response){
         module.exports.alliances = JSON.parse(response.data);
@@ -11,6 +20,8 @@ module.exports.init = function(){
 
                 module.exports.userToAlliance[memberName] = alliance;
             }
+
+            module.exports.alliances[alliance].color = module.exports.colors[module.exports.alliances[alliance].alliance_gcl_rank % module.exports.colors.length];
         }
 
         module.exports.update();
