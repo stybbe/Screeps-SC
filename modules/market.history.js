@@ -80,7 +80,7 @@ module.exports.calcTransactionCost = function (amount, roomName1, roomName2) {
     var distance = module.exports.calcRoomsDistance(roomName1, roomName2, true);
 
     console.log("amount: " + amount + " roomName1: " + roomName1 + " roomName2: " + roomName2 + " distance: " + distance);
-    return Math.max(0, Math.ceil(amount * (Math.log((distance + 9) * 0.1) + 0.1)));
+    return Math.ceil(amount*(1-Math.exp(-distance/30)))
 }
 
 /* taken from @screeps utils */
