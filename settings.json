@@ -81,6 +81,13 @@
             "options":{
                 "image": "/options/images/world.battle.radar.png"
             }
+        },
+        {
+            "path": "modules/navbar.bucket.js",
+            "runAt":{
+                "onCompleted": "https://screeps.com/api/user/world-status" 
+            },
+            "options":{}
         }
     ]
 }
