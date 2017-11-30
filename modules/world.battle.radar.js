@@ -243,10 +243,10 @@ module.exports.displayNukeTab = function(gameTime, shard){
         else if (!shard){
             $('#sc-tbody-battle-radar-pvp').append(`<div style='position: absolute;right: 50%;font-size: 16px;padding-top: 10px;''>Failed to read shard.</div>`);
         }
-        else if (data.nukes.length === 0){
+        else if (data.nukes[shard].length === 0){
             $('#sc-tbody-battle-radar').append("<div style='position: absolute;right: 50%;font-size: 16px;padding-top: 10px;''> The world is at peace.</div>");
         }else{
-            data.nukes.forEach(function(nukeInfo){
+            data.nukes[shard].forEach(function(nukeInfo){
 
                 var defenderName = "Unknown";
                 var attackerName = "Unknown";
